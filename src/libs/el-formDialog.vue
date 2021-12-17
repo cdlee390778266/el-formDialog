@@ -10,12 +10,7 @@
       :width="width || '800px'"
       @close="closedialog"
     >
-      <div class="dialogfrom" v-loading="isLoading">
-        <div class="ProductTitle" v-show="showTopDsc">
-          <i class="el-icon-info" style="margin-right: 8px"></i>
-          功能描述
-        </div>
-
+      <div class="formdialog" v-loading="isLoading">
         <el-form
           :model="form"
           :rules="rules"
@@ -25,7 +20,7 @@
         >
           <el-row :gutter="20">
             <el-col
-              v-for="(config, index) in treatedFormConfirg.filter(
+              v-for="(config, index) in treatedFormConfig.filter(
                 (config) => !config.hidden
               )"
               :key="config.key"
@@ -39,7 +34,7 @@
               />
               <div
                 v-else-if="config.type === 'text'"
-                class="dflex text-left mgb10 fc-default-color"
+                class="dflex text-left mgb10"
                 :style="config.style"
               >
                 <div style="width: 140px">
@@ -57,34 +52,33 @@
                   v-if="config.type === 'input'"
                   v-model="form[config.key]"
                   v-bind="config"
-                  :disabled="type === 'view' || config.readonly"
-                  :readonly="type === 'view' || config.readonly"
+                  :disabled="type === 'view' || config.disabled"
+                  v-on="eventsAddParams(config.events, config, index)"
                 />
                 <el-input-number
                   v-if="config.type === 'number'"
                   v-model="form[config.key]"
                   v-bind="config"
-                  :disabled="type === 'view' || config.readonly"
+                  :disabled="type === 'view' || config.disabled"
+                  v-on="eventsAddParams(config.events, config, index)"
                 />
-
-                <el-select
-                  v-if="config.type === 'select'"
+                <el-input
+                  v-if="config.type === 'textarea'"
                   v-model="form[config.key]"
                   v-bind="config"
-                  :disabled="type === 'view' || config.readonly"
-                  @change="
-                    (val) =>
-                      typeof config.change === 'function' &&
-                      config.change(
-                        val,
-                        config,
-                        treatedFormConfirg,
-                        form,
-                        formData
-                      )
-                  "
+                  :disabled="type === 'view' || config.disabled"
+                  v-on="eventsAddParams(config.events, config, index)"
                 >
-                  <el-option
+                </el-input>
+
+                <el-checkbox-group
+                  v-if="config.type === 'checkbox'"
+                  v-model="form[config.key]"
+                  v-bind="config"
+                  :disabled="type === 'view' || config.disabled"
+                  v-on="eventsAddParams(config.events, config, index)"
+                >
+                  <el-checkbox
                     v-for="item in config.options"
                     :key="
                       config.optionValueKey
@@ -92,40 +86,25 @@
                         : item.value
                     "
                     :label="
-                      config.optionLabelKey
-                        ? item[config.optionLabelKey]
-                        : item.label
-                    "
-                    :value="
                       config.optionValueKey
                         ? item[config.optionValueKey]
                         : item.value
                     "
-                  />
-                </el-select>
-                <el-date-picker
-                  v-if="config.type === 'date'"
-                  v-model="form[config.key]"
-                  :disabled="config.disabled"
-                  type="date"
-                  size="small"
-                  v-bind="config"
-                  :readonly="type === 'view' || config.readonly"
-                >
-                </el-date-picker>
-                <el-input
-                  v-if="config.type === 'textarea'"
-                  v-model="form[config.key]"
-                  v-bind="config"
-                  :readonly="type === 'view' || config.readonly"
-                  :disabled="type === 'view' || config.readonly"
-                >
-                </el-input>
+                  >
+                    {{
+                      config.optionLabelKey
+                        ? item[config.optionLabelKey]
+                        : item.label
+                    }}
+                  </el-checkbox>
+                </el-checkbox-group>
+
                 <el-radio-group
                   v-if="config.type === 'radio'"
                   v-model="form[config.key]"
                   v-bind="config"
-                  :readonly="type === 'view' || config.readonly"
+                  :disabled="type === 'view' || config.disabled"
+                  v-on="eventsAddParams(config.events, config, index)"
                 >
                   <el-radio
                     v-for="item in config.options"
@@ -147,6 +126,72 @@
                     }}
                   </el-radio>
                 </el-radio-group>
+
+                <el-select
+                  v-if="config.type === 'select'"
+                  v-model="form[config.key]"
+                  v-bind="config"
+                  :disabled="type === 'view' || config.disabled"
+                  v-on="eventsAddParams(config.events, config, index)"
+                >
+                  <el-option
+                    v-for="item in config.options"
+                    :key="
+                      config.optionValueKey
+                        ? item[config.optionValueKey]
+                        : item.value
+                    "
+                    :label="
+                      config.optionLabelKey
+                        ? item[config.optionLabelKey]
+                        : item.label
+                    "
+                    :value="
+                      config.optionValueKey
+                        ? item[config.optionValueKey]
+                        : item.value
+                    "
+                  />
+                </el-select>
+                <el-date-picker
+                  v-if="
+                    [
+                      'year',
+                      'month',
+                      'date',
+                      'dates',
+                      'week',
+                      'datetime',
+                      'datetimerange',
+                      'daterange',
+                      'monthrange',
+                    ].includes(config.type)
+                  "
+                  :type="config.type"
+                  v-model="form[config.key]"
+                  v-bind="config"
+                  :disabled="type === 'view' || config.disabled"
+                  v-on="eventsAddParams(config.events, config, index)"
+                >
+                </el-date-picker>
+                <el-switch
+                  v-if="config.type === 'switch'"
+                  type="date"
+                  v-model="form[config.key]"
+                  v-bind="config"
+                  :disabled="type === 'view' || config.disabled"
+                  v-on="eventsAddParams(config.events, config, index)"
+                >
+                </el-switch>
+                <el-slider
+                  v-if="config.type === 'slider'"
+                  type="date"
+                  v-model="form[config.key]"
+                  v-bind="config"
+                  :disabled="type === 'view' || config.disabled"
+                  v-on="eventsAddParams(config.events, config, index)"
+                >
+                </el-slider>
                 <el-upload
                   v-if="config.type === 'file'"
                   :accept="config.accept || '.jpg,.png'"
@@ -175,8 +220,7 @@
                       class="avatar"
                     />
                     <span class="ellipsis" v-else>
-                      <i class="el-icon-document fs18 mgr10"></i
-                      >{{ form[config.key] }}
+                      <i class="el-icon-document"></i>{{ form[config.key] }}
                     </span>
                   </template>
                   <div v-else>
@@ -222,9 +266,9 @@ export default {
       isLoading: false,
       form: {},
       rules: {},
-      treatedFormConfirg: [],
+      treatedFormConfig: [],
       addAttrsKey: "",
-      saveFormConfirg: [],
+      saveFormConfig: [],
       attrs: [],
       saveRules: {},
       saveForm: {},
@@ -263,7 +307,7 @@ export default {
       type: String,
       default: "140px",
     },
-    formConfirg: {
+    formConfig: {
       type: Array,
       default: () => [],
     },
@@ -276,16 +320,13 @@ export default {
       type: Array,
       default: () => [],
     },
-    showTopDsc: {
-      type: Boolean,
-      default: true,
-    },
   },
   watch: {
     visible() {
       this.init();
     },
-    formConfirg() {
+    formConfig() {
+      console.log(12321321);
       this.init();
     },
   },
@@ -296,17 +337,17 @@ export default {
       let rules = {};
       this.form = {};
       this.rules = {};
-      this.treatedFormConfirg = [];
+      this.treatedFormConfig = [];
       this.addAttrsKey = "";
-      this.saveFormConfirg = [];
+      this.saveFormConfig = [];
       this.attrs = this.addAttrs || [];
       this.saveRules = {};
       this.saveForm = {};
       this.dataType = "";
 
       let _this = this;
-      this.treatedFormConfirg = [...this.formConfirg];
-      this.treatedFormConfirg.forEach((config, index) => {
+      this.treatedFormConfig = [...this.formConfig];
+      this.treatedFormConfig.forEach((config, index) => {
         if (config.type === "text") return;
         form[config.key] =
           this.formData[config.key] || this.formData[config.key] == 0
@@ -323,7 +364,6 @@ export default {
         // 如果是必填，则生成规则
         let rule = {
           required: !!config.required,
-          // trigger: "change"
         };
         if (config.validator) {
           rule.validator = config.validator;
@@ -365,7 +405,7 @@ export default {
       this.rules = rules;
       this.reset();
       // 保存formConfig,rules,form
-      this.saveFormConfirg = [...this.formConfirg];
+      this.saveFormConfig = [...this.formConfig];
       this.saveRules = {
         ...this.rules,
       };
@@ -373,10 +413,23 @@ export default {
         ...form,
       };
     },
-    change(changeFnKey, val, config, index) {
-      this[changeFnKey] &&
-        typeof this[changeFnKey] === "function" &&
-        this[changeFnKey](val, config, index);
+    // 给事件回调函数添加参数
+    eventsAddParams(events, config, index) {
+      let rEvents = {};
+
+      for (const key in events) {
+        rEvents[key] = () => {
+          events[key](
+            this.form[config.key],
+            config,
+            index,
+            this.treatedFormConfig,
+            this.form,
+            this.formData
+          );
+        };
+      }
+      return rEvents;
     },
     handleSuccess(res, file, config) {
       if (config.addKeys && config.addKeys[0]) {
@@ -483,15 +536,43 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.dflex {
+  display: flex;
+}
+.flex {
+  flex: 1;
+}
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.mgb10 {
+  margin-bottom: 10px;
+}
+.mgt20 {
+  margin-top: 20px;
+}
 /deep/ .el-dialog__body {
   padding: 0px 0px 20px 0px;
 }
 /deep/ .el-form-item__label {
   height: 34px;
 }
-.text-center {
-  margin-right: 20px;
+
+/deep/ .el-input-number input {
+  text-align: left;
 }
+
+/deep/ .el-slider {
+  padding: 0 10px;
+}
+
+.formdialog {
+  margin-top: 30px;
+}
+
 .el-form {
   padding: 0px 20px;
   margin: 10px 0;
@@ -499,7 +580,8 @@ export default {
   max-height: calc(100vh - 290px) !important;
   overflow-y: auto;
 }
-.ProductTitle {
+
+.dsc {
   height: 45px;
   background: #f7f9fc;
   padding-left: 10px;
