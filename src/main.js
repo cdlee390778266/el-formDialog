@@ -5,7 +5,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './example/App.vue';
 
-import ElFormDialog from "./libs/el-formDialog.js";
+import ElFormDialog from "../lib/el-form-dialog.min.js";
 
 Vue.use(ElementUI);
 Vue.use(ElFormDialog)

@@ -1,13 +1,20 @@
 'use strict'
-const path = require('path')
+const path = require('path');
 
-console.log(path.resolve(__dirname, 'lib'), 99)
 module.exports = {
   entry: {
-    'el-table-chen': './src/libs/el-table-chen.js'
+    'el-form-dialog': './src/libs/el-formDialog.js'
   },
   output: {
-    path: path.resolve(__dirname, 'lib'),
-    filename: '[name].min.js'
+    path: path.resolve(__dirname, '../lib'),
+    filename: '[name].min.js',
+    library: 'el_form_dialog',
+    libraryTarget: 'umd'
   },
+  module: {
+    rules: [{
+      test: /\.vue$/,
+      use: 'vue-loader'
+    }]
+  }
 }
