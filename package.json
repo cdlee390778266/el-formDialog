@@ -1,7 +1,7 @@
 {
   "name": "el-form-dialog-chen",
-  "version": "1.0.0",
-  "description": "element-ui 表单可配置化组件 表单弹窗可配置化组件",
+  "version": "1.0.1",
+  "description": "element-ui 表单可配置化组件 表单弹窗可配置化组件 告别复制粘贴噩梦",
   "keywords": ["element-ui", "el-form-chen", "el-form-dialog-chen", "el-input", "el-number"],
   "author": "cdlee390778266",
   "private": false,
