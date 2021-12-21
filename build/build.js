@@ -3,12 +3,12 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    'el-form-dialog': './src/libs/el-formDialog.js'
+    'el-form-dialog-chen': './src/libs/el-formDialog.js'
   },
   output: {
     path: path.resolve(__dirname, '../lib'),
     filename: '[name].min.js',
-    library: 'el_form_dialog',
+    library: 'el_form_dialog_chen',
     libraryTarget: 'umd'
   },
   module: {

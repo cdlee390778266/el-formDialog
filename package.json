@@ -1,11 +1,11 @@
 {
-  "name": "el-formDialog",
+  "name": "el-form-dialog-chen",
   "version": "1.0.0",
   "description": "element-ui 表单可配置化组件 表单弹窗可配置化组件",
-  "keywords": ["element-ui", "el-form-chen", "el-form-dialog", "el-input", "el-number"],
+  "keywords": ["element-ui", "el-form-chen", "el-form-dialog-chen", "el-input", "el-number"],
   "author": "cdlee390778266",
   "private": false,
-  "main": "lib/el-form-dialog.min.js",
+  "main": "lib/el-form-dialog-chen.min.js",
   "files": ["lib", "src"],
   "repository": {
     "type": "git",

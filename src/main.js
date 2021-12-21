@@ -5,10 +5,10 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './example/App.vue';
 
-import ElFormDialog from "../lib/el-form-dialog.min.js";
+import ElFormDialogChen from "../lib/el-form-dialog-chen.min.js";
 
 Vue.use(ElementUI);
-Vue.use(ElFormDialog)
+Vue.use(ElFormDialogChen)
 
 Vue.config.productionTip = false
 

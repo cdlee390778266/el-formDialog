@@ -1,4 +1,4 @@
-# ElFormChen、ElFormDialog
+# ElFormChen、ElFormDialogChen
 
 > 表单配置化组件、表单弹窗配置化组件可轻松生成表单，告别复制粘贴的噩梦，支持 el-input/el-input-number/el-checkbox/el-radio/el-select/el-date-picker/el-time-picker/el-switch/el-slider/el-rate/el-color-picker/el-upload
 
@@ -6,16 +6,16 @@
 
 - 1. 由于组件依赖 element-ui,所以项目需要引入[element-ui](https://element.eleme.cn/#/zh-CN/component/quickstart)
 
-- 2.  安装 ElTableChen
+- 2.  安装 ElFormDialogChen
       ```shell
-      npm i el-table-chen -S
+      npm i el-form-dialog-chen -S
       ```
 
 ## 注册
 
 ```javascript
-import ElFormDialog from "el-form-dialog";
-Vue.use(ElFormDialog);
+import ElFormDialogChen from "el-form-dialog-chen";
+Vue.use(ElFormDialogChen);
 ```
 
 ## 效果图
@@ -1003,7 +1003,7 @@ export default {
 
 ```
 
-## ElFormDialog 源码
+## ElFormDialogChen 源码
 
 ```javascript
 <template>
@@ -1025,7 +1025,7 @@ export default {
 
 <script>
 export default {
-  name: "ElFormDialog",
+  name: "ElFormDialogChen",
   props: {
     visible: {
       // 显示/隐藏

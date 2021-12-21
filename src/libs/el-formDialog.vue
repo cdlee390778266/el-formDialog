@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "ElFormDialog",
+  name: "ElFormDialogChen",
   props: {
     visible: {
       // 显示/隐藏

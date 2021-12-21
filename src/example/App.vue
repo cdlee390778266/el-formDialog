@@ -4,7 +4,7 @@
     <el-button @click="open('edit', '编辑表单弹窗')">编辑表单弹窗</el-button>
     <el-button @click="open('view', '编辑表单弹窗')">查看表单弹窗</el-button>
     <!-- 表单弹框 -->
-    <ElFormDialog
+    <ElFormDialogChen
       ref="formDialog"
       v-bind="dialog"
       @closedialog="dialog.visible = false"
@@ -18,7 +18,7 @@
           />
         </el-form-item>
       </template>
-    </ElFormDialog>
+    </ElFormDialogChen>
     <!-- 可配置表单 -->
     <ElFormChen
       v-bind="form"
