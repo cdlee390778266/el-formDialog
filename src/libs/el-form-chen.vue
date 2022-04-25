@@ -430,8 +430,7 @@ export default {
               this.type,
               data,
               this.formData,
-              this.closedialog,
-              this.hideLoading
+              this.closedialog
             );
           } else {
             this.closedialog();

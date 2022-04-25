@@ -423,7 +423,7 @@ export default {
       }
     },
     // handelType 弹窗操作类型, formData 表单数据, srcFormData 原始表单数据, closeCb 关闭弹窗函数
-    onsubmit(handelType, formData, srcFormData, closeCb) {
+    onsubmit(handelType, formData, srcFormData, closeCb, hideLoading) {
       new Promise((resolve, reject) => {
         setTimeout(closeCb, 1000);
       });
@@ -882,7 +882,8 @@ export default {
               this.type,
               data,
               this.formData,
-              this.closedialog
+              this.closedialog,
+              this.hideLoading
             );
           } else {
             this.closedialog();

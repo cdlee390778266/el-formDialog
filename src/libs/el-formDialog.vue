@@ -10,7 +10,7 @@
       :closeOnClickModal="closeOnClickModal"
       @close="$listeners.closedialog"
     >
-      <ElFormChen v-bind="$attrs" v-on="$listeners" />
+      <ElFormChen v-if="visible" v-bind="$attrs" v-on="$listeners" />
     </el-dialog>
   </div>
 </template>
