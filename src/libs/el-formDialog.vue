@@ -356,6 +356,11 @@ export default {
     };
   },
   watch: {
+    visible() {
+      if(this.visible) {
+        this.init();
+      }
+    },
     formConfig: {
       handler() {
         this.init();
@@ -468,7 +473,8 @@ export default {
               this.type,
               data,
               this.formData,
-              this.closedialog
+              this.closedialog,
+              this.hideLoading
             );
           } else {
             this.closedialog();
