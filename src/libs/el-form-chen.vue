@@ -49,7 +49,7 @@
               <!-- 输入框 -->
               <el-input
                 v-if="config.type === 'input'"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -57,7 +57,7 @@
               <!-- 数字 -->
               <el-input-number
                 v-if="config.type === 'number'"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -65,7 +65,7 @@
               <!-- 文本域 -->
               <el-input
                 v-if="config.type === 'textarea'"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -74,7 +74,7 @@
               <!-- 多选 -->
               <el-checkbox-group
                 v-if="config.type === 'checkbox'"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -102,7 +102,7 @@
               <!-- 单选 -->
               <el-radio-group
                 v-if="config.type === 'radio'"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -130,7 +130,7 @@
               <!-- 下拉 -->
               <el-select
                 v-if="config.type === 'select'"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -170,7 +170,7 @@
                   ].includes(config.type)
                 "
                 :type="config.type"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -180,7 +180,7 @@
               <el-time-picker
                 v-if="config.type == 'time'"
                 :type="config.type"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -190,7 +190,7 @@
               <el-switch
                 v-if="config.type === 'switch'"
                 type="date"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -199,7 +199,7 @@
               <!-- 滑块 -->
               <el-slider
                 v-if="config.type === 'slider'"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -208,7 +208,7 @@
               <!-- 评分 -->
               <el-rate
                 v-if="config.type === 'rate'"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -216,7 +216,7 @@
               <!-- 颜色 -->
               <el-color-picker
                 v-if="config.type === 'color'"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :disabled="type === 'view' || config.disabled"
                 v-on="eventsAddParams(config.events, config, index)"
@@ -224,7 +224,7 @@
               <!-- 文件上传 -->
               <el-upload
                 v-if="config.type === 'file'"
-                v-model="form[config.key]"
+                v-model.trim="form[config.key]"
                 v-bind="config"
                 :action="config.action || ''"
                 :disabled="type === 'view' || config.disabled"
