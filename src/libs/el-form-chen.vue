@@ -342,15 +342,15 @@ export default {
       this.treatedFormConfig.forEach((config, index) => {
         if (config.type === "text" || config.type === "slot") return;
         form[config.key] =
-          this.formData[config.key] || this.formData[config.key] == 0
+          this.formData[config.key] || this.formData[config.key] === 0 || this.formData[config.key] === false
             ? this.formData[config.key]
-            : config.defaultValue || config.defaultValue == undefined
+            : config.defaultValue || config.defaultValue == undefined || config.defaultValue === false
             ? config.defaultValue
             : "";
         // 如果有追加参数
         if (config.addKeys && config.addKeys.length) {
           config.addKeys.forEach((key) => {
-            form[key] = this.formData[key] || "";
+            form[key] = this.formData[key] || this.formData[key] === 0 || this.formData[key] === false ? this.formData[key] : "";
           });
         }
         // 如果是必填，则生成规则
