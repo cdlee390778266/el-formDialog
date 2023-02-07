@@ -11,266 +11,269 @@
       @close="$listeners.closedialog"
     >
       <div v-if="visible">
-    <div class="formdialog" v-loading="isLoading">
-      <el-form
-        :model="form"
-        :rules="rules"
-        :labelWidth="labelWidth"
-        :label-position="labelPosition"
-        :size="size"
-        :style="{
-          maxHeight: dialog
-            ? 'calc(100vh - 310px)'
-            : '10000000000px !important',
-        }"
-        ref="form"
-      >
-        <el-row :gutter="20">
-          <el-col
-            v-for="(config, index) in treatedFormConfig.filter(
-              (config) => !config.hidden
-            )"
-            :key="config.key"
-            :span="config.span"
-            :style="config.elColStyle || ''"
+        <div class="formdialog" v-loading="isLoading">
+          <el-form
+            :model="form"
+            :rules="rules"
+            :labelWidth="labelWidth"
+            :label-position="labelPosition"
+            :size="size"
+            :style="{
+              maxHeight: dialog
+                ? 'calc(100vh - 310px)'
+                : '10000000000px !important',
+            }"
+            ref="form"
           >
-            <slot
-              v-if="config.type === 'slot'"
-              :name="config.slotName"
-              :$props="$props"
-              :$data="$data"
-              :config="config"
-            />
-            <div
-              v-else-if="config.type === 'text'"
-              class="dflex mgb10"
-              style="text-align: right"
-              :style="config.style"
-            >
-              <div
-                :style="{ width: labelWidth }"
-                style="padding-right: 12px; box-sizing: border-box"
+            <el-row :gutter="20">
+              <el-col
+                v-for="(config, index) in treatedFormConfig.filter(
+                  (config) => !config.hidden
+                )"
+                :key="config.key"
+                :span="config.span"
+                :style="config.elColStyle || ''"
               >
-                <span class="mgr10">{{ config.label }}</span>
-              </div>
-              <div class="flex"></div>
-            </div>
-
-            <el-form-item v-else :label="`${config.label}`" :prop="config.key">
-              <!-- 输入框 -->
-              <el-input
-                v-if="config.type === 'input'"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              />
-              <!-- 数字 -->
-              <el-input-number
-                v-if="config.type === 'number'"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              />
-              <!-- 文本域 -->
-              <el-input
-                v-if="config.type === 'textarea'"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              >
-              </el-input>
-              <!-- 多选 -->
-              <el-checkbox-group
-                v-if="config.type === 'checkbox'"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              >
-                <el-checkbox
-                  v-for="item in config.options"
-                  :key="
-                    config.optionValueKey
-                      ? item[config.optionValueKey]
-                      : item.value
-                  "
-                  :label="
-                    config.optionValueKey
-                      ? item[config.optionValueKey]
-                      : item.value
-                  "
-                >
-                  {{
-                    config.optionLabelKey
-                      ? item[config.optionLabelKey]
-                      : item.label
-                  }}
-                </el-checkbox>
-              </el-checkbox-group>
-              <!-- 单选 -->
-              <el-radio-group
-                v-if="config.type === 'radio'"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              >
-                <el-radio
-                  v-for="item in config.options"
-                  :key="
-                    config.optionValueKey
-                      ? item[config.optionValueKey]
-                      : item.value
-                  "
-                  :label="
-                    config.optionValueKey
-                      ? item[config.optionValueKey]
-                      : item.value
-                  "
-                >
-                  {{
-                    config.optionLabelKey
-                      ? item[config.optionLabelKey]
-                      : item.label
-                  }}
-                </el-radio>
-              </el-radio-group>
-              <!-- 下拉 -->
-              <el-select
-                v-if="config.type === 'select'"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              >
-                <el-option
-                  v-for="item in config.options"
-                  :key="
-                    config.optionValueKey
-                      ? item[config.optionValueKey]
-                      : item.value
-                  "
-                  :label="
-                    config.optionLabelKey
-                      ? item[config.optionLabelKey]
-                      : item.label
-                  "
-                  :value="
-                    config.optionValueKey
-                      ? item[config.optionValueKey]
-                      : item.value
-                  "
+                <slot
+                  v-if="config.type === 'slot'"
+                  :name="config.slotName"
+                  :$props="$props"
+                  :$data="$data"
+                  :config="config"
                 />
-              </el-select>
-              <!-- 日期 -->
-              <el-date-picker
-                v-if="
-                  [
-                    'year',
-                    'month',
-                    'date',
-                    'dates',
-                    'week',
-                    'datetime',
-                    'datetimerange',
-                    'daterange',
-                    'monthrange',
-                  ].includes(config.type)
-                "
-                :type="config.type"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              >
-              </el-date-picker>
-              <!-- 时间 -->
-              <el-time-picker
-                v-if="config.type == 'time'"
-                :type="config.type"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              >
-              </el-time-picker>
-              <!-- 开关 -->
-              <el-switch
-                v-if="config.type === 'switch'"
-                type="date"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              >
-              </el-switch>
-              <!-- 滑块 -->
-              <el-slider
-                v-if="config.type === 'slider'"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              >
-              </el-slider>
-              <!-- 评分 -->
-              <el-rate
-                v-if="config.type === 'rate'"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              ></el-rate>
-              <!-- 颜色 -->
-              <el-color-picker
-                v-if="config.type === 'color'"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              ></el-color-picker>
-              <!-- 文件上传 -->
-              <el-upload
-                v-if="config.type === 'file'"
-                v-model.trim="form[config.key]"
-                v-bind="config"
-                :action="config.action || ''"
-                :disabled="type === 'view' || config.disabled"
-                v-on="eventsAddParams(config.events, config, index)"
-              >
-                <el-button
-                  v-if="config['listType'] != 'picture-card'"
-                  type="primary"
-                  :size="size"
-                  :disabled="type === 'view' || config.disabled"
-                  >点击上传</el-button
-                >
                 <div
-                  slot="tip"
-                  class="el-upload__tip"
-                  v-if="config.placeholder"
+                  v-else-if="config.type === 'text'"
+                  class="dflex mgb10"
+                  style="text-align: right"
+                  :style="config.style"
                 >
-                  <div v-html="config.placeholder" class="disabled"></div>
+                  <div
+                    :style="{ width: labelWidth }"
+                    style="padding-right: 12px; box-sizing: border-box"
+                  >
+                    <span class="mgr10">{{ config.label }}</span>
+                  </div>
+                  <div class="flex"></div>
                 </div>
-              </el-upload>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div class="text-center mgt20">
-        <el-button @click="closedialog">关 闭</el-button>
-        <el-button v-if="type !== 'view'" type="primary" @click="onsubmit"
-          >保 存</el-button
-        >
-        <slot name="addBtns" :$data="{ ...$data }" />
+
+                <el-form-item
+                  v-else
+                  :label="`${config.label}`"
+                  :prop="config.key"
+                >
+                  <!-- 输入框 -->
+                  <el-input
+                    v-if="config.type === 'input'"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  />
+                  <!-- 数字 -->
+                  <el-input-number
+                    v-if="config.type === 'number'"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  />
+                  <!-- 文本域 -->
+                  <el-input
+                    v-if="config.type === 'textarea'"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  >
+                  </el-input>
+                  <!-- 多选 -->
+                  <el-checkbox-group
+                    v-if="config.type === 'checkbox'"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  >
+                    <el-checkbox
+                      v-for="item in config.options"
+                      :key="
+                        config.optionValueKey
+                          ? item[config.optionValueKey]
+                          : item.value
+                      "
+                      :label="
+                        config.optionValueKey
+                          ? item[config.optionValueKey]
+                          : item.value
+                      "
+                    >
+                      {{
+                        config.optionLabelKey
+                          ? item[config.optionLabelKey]
+                          : item.label
+                      }}
+                    </el-checkbox>
+                  </el-checkbox-group>
+                  <!-- 单选 -->
+                  <el-radio-group
+                    v-if="config.type === 'radio'"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  >
+                    <el-radio
+                      v-for="item in config.options"
+                      :key="
+                        config.optionValueKey
+                          ? item[config.optionValueKey]
+                          : item.value
+                      "
+                      :label="
+                        config.optionValueKey
+                          ? item[config.optionValueKey]
+                          : item.value
+                      "
+                    >
+                      {{
+                        config.optionLabelKey
+                          ? item[config.optionLabelKey]
+                          : item.label
+                      }}
+                    </el-radio>
+                  </el-radio-group>
+                  <!-- 下拉 -->
+                  <el-select
+                    v-if="config.type === 'select'"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  >
+                    <el-option
+                      v-for="item in config.options"
+                      :key="
+                        config.optionValueKey
+                          ? item[config.optionValueKey]
+                          : item.value
+                      "
+                      :label="
+                        config.optionLabelKey
+                          ? item[config.optionLabelKey]
+                          : item.label
+                      "
+                      :value="
+                        config.optionValueKey
+                          ? item[config.optionValueKey]
+                          : item.value
+                      "
+                    />
+                  </el-select>
+                  <!-- 日期 -->
+                  <el-date-picker
+                    v-if="
+                      [
+                        'year',
+                        'month',
+                        'date',
+                        'dates',
+                        'week',
+                        'datetime',
+                        'datetimerange',
+                        'daterange',
+                        'monthrange',
+                      ].includes(config.type)
+                    "
+                    :type="config.type"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  >
+                  </el-date-picker>
+                  <!-- 时间 -->
+                  <el-time-picker
+                    v-if="config.type == 'time'"
+                    :type="config.type"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  >
+                  </el-time-picker>
+                  <!-- 开关 -->
+                  <el-switch
+                    v-if="config.type === 'switch'"
+                    type="date"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  >
+                  </el-switch>
+                  <!-- 滑块 -->
+                  <el-slider
+                    v-if="config.type === 'slider'"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  >
+                  </el-slider>
+                  <!-- 评分 -->
+                  <el-rate
+                    v-if="config.type === 'rate'"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  ></el-rate>
+                  <!-- 颜色 -->
+                  <el-color-picker
+                    v-if="config.type === 'color'"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  ></el-color-picker>
+                  <!-- 文件上传 -->
+                  <el-upload
+                    v-if="config.type === 'file'"
+                    v-model.trim="form[config.key]"
+                    v-bind="config"
+                    :action="config.action || ''"
+                    :disabled="type === 'view' || config.disabled"
+                    v-on="eventsAddParams(config.events, config, index)"
+                  >
+                    <el-button
+                      v-if="config['listType'] != 'picture-card'"
+                      type="primary"
+                      :size="size"
+                      :disabled="type === 'view' || config.disabled"
+                      >点击上传</el-button
+                    >
+                    <div
+                      slot="tip"
+                      class="el-upload__tip"
+                      v-if="config.placeholder"
+                    >
+                      <div v-html="config.placeholder" class="disabled"></div>
+                    </div>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <div class="text-center mgt20">
+            <el-button @click="closedialog">关 闭</el-button>
+            <el-button v-if="type !== 'view'" type="primary" @click="onsubmit"
+              >保 存</el-button
+            >
+            <slot name="addBtns" :$data="{ ...$data }" />
+          </div>
+          <slot name="tip" />
+        </div>
       </div>
-      <slot name="tip" />
-    </div>
-  </div>
-      
     </el-dialog>
   </div>
 </template>
@@ -357,7 +360,7 @@ export default {
   },
   watch: {
     visible() {
-      if(this.visible) {
+      if (this.visible) {
         this.init();
       }
     },
@@ -385,15 +388,24 @@ export default {
       this.treatedFormConfig.forEach((config, index) => {
         if (config.type === "text" || config.type === "slot") return;
         form[config.key] =
-          this.formData[config.key] || this.formData[config.key] === 0 || this.formData[config.key] === false
+          this.formData[config.key] ||
+          this.formData[config.key] === 0 ||
+          this.formData[config.key] === false
             ? this.formData[config.key]
-            : config.defaultValue || config.defaultValue == undefined || config.defaultValue === false
+            : config.defaultValue ||
+              config.defaultValue == undefined ||
+              config.defaultValue === false
             ? config.defaultValue
             : "";
         // 如果有追加参数
         if (config.addKeys && config.addKeys.length) {
           config.addKeys.forEach((key) => {
-            form[key] = this.formData[key] || this.formData[key] === 0 || this.formData[key] === false ? this.formData[key] : "";
+            form[key] =
+              this.formData[key] ||
+              this.formData[key] === 0 ||
+              this.formData[key] === false
+                ? this.formData[key]
+                : "";
           });
         }
         // 如果是必填，则生成规则
