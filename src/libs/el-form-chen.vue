@@ -149,7 +149,7 @@
                   "
                   :value="
                     config.optionValueKey
-                      ? item[config.optionValueKey]
+                      ? config.optionValueKey == '_self' ? item : item[config.optionValueKey]
                       : item.value
                   "
                 />
