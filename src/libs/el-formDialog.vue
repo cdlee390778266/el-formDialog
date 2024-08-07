@@ -3,6 +3,7 @@
     <el-dialog
       top="50px"
       modal-append-to-body
+      append-to-body
       :title="title || '模态框'"
       :visible="visible"
       :width="width || '800px'"
@@ -21,14 +22,14 @@
             :style="{
               maxHeight: dialog
                 ? 'calc(100vh - 310px)'
-                : '10000000000px !important',
+                : '10000000000px !important'
             }"
             ref="form"
           >
             <el-row :gutter="20">
               <el-col
                 v-for="(config, index) in treatedFormConfig.filter(
-                  (config) => !config.hidden
+                  config => !config.hidden
                 )"
                 :key="config.key"
                 :span="config.span"
@@ -164,7 +165,9 @@
                       "
                       :value="
                         config.optionValueKey
-                          ? config.optionValueKey == '_self' ? item : item[config.optionValueKey]
+                          ? config.optionValueKey == '_self'
+                            ? item
+                            : item[config.optionValueKey]
                           : item.value
                       "
                     />
@@ -181,7 +184,7 @@
                         'datetime',
                         'datetimerange',
                         'daterange',
-                        'monthrange',
+                        'monthrange'
                       ].includes(config.type)
                     "
                     :type="config.type"
@@ -285,67 +288,67 @@ export default {
     visible: {
       // 显示/隐藏
       type: Boolean,
-      default: false,
+      default: false
     },
     title: {
       // 标题
       type: String,
-      default: "",
+      default: ""
     },
     width: {
       // 宽度
       type: String,
-      default: "",
+      default: ""
     },
     destroyOnClose: {
       type: Boolean,
-      default: true,
+      default: true
     },
     closeOnClickModal: {
       // 点击遮罩是否关闭弹窗
       type: Boolean,
-      default: false,
+      default: false
     },
     dialog: {
       // 是否是弹窗的表单
       type: Boolean,
-      default: false,
+      default: false
     },
     type: {
       // 类型
       type: String,
-      default: "add", // add or edit or view
+      default: "add" // add or edit or view
     },
     labelPosition: {
       // 标签的位置 right/left/top
       type: String,
-      default: "right",
+      default: "right"
     },
     labelWidth: {
       // 标签宽度
       type: String,
-      default: "140px",
+      default: "140px"
     },
     formConfig: {
       // 表单配置
       type: Array,
-      default: () => [],
+      default: () => []
     },
     formData: {
       // 表单数据
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     size: {
       // 表达尺寸 medium/small/mini
       type: String,
-      default: "",
+      default: ""
     },
     submitLoading: {
       // 提交是否显示loading状态
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   data() {
     return {
@@ -355,7 +358,7 @@ export default {
       treatedFormConfig: [],
       saveFormConfig: [],
       saveRules: {},
-      saveForm: {},
+      saveForm: {}
     };
   },
   watch: {
@@ -368,8 +371,8 @@ export default {
       handler() {
         this.init();
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   methods: {
     init() {
@@ -399,7 +402,7 @@ export default {
             : "";
         // 如果有追加参数
         if (config.addKeys && config.addKeys.length) {
-          config.addKeys.forEach((key) => {
+          config.addKeys.forEach(key => {
             form[key] =
               this.formData[key] ||
               this.formData[key] === 0 ||
@@ -410,7 +413,7 @@ export default {
         }
         // 如果是必填，则生成规则
         let rule = {
-          required: !!config.required,
+          required: !!config.required
         };
         if (config.validator) {
           rule.validator = config.validator;
@@ -436,7 +439,7 @@ export default {
                 return date ? val : false;
               }
               return false;
-            },
+            }
           };
         }
       });
@@ -447,10 +450,10 @@ export default {
       // 保存formConfig,rules,form
       this.saveFormConfig = [...this.formConfig];
       this.saveRules = {
-        ...this.rules,
+        ...this.rules
       };
       this.saveForm = {
-        ...form,
+        ...form
       };
     },
     // 给事件回调函数添加参数
@@ -472,10 +475,10 @@ export default {
       return rEvents;
     },
     onsubmit() {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(valid => {
         if (valid) {
           let data = {
-            ...this.form,
+            ...this.form
           };
 
           if (this.submitLoading) {
@@ -512,8 +515,8 @@ export default {
       this.$nextTick(() => {
         this.$refs.form && this.$refs.form.clearValidate();
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -604,4 +607,3 @@ export default {
   }
 }
 </style>
-

@@ -1,12 +1,25 @@
 {
   "name": "el-form-dialog-chen",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "element-ui 表单可配置化组件 表单弹窗可配置化组件 告别复制粘贴噩梦",
-  "keywords": ["vue", "ui", "form", "dialog", "element-ui", "el-input", "el-number", "el-form-chen", "el-form-dialog-chen" ],
+  "keywords": [
+    "vue",
+    "ui",
+    "form",
+    "dialog",
+    "element-ui",
+    "el-input",
+    "el-number",
+    "el-form-chen",
+    "el-form-dialog-chen"
+  ],
   "author": "cdlee390778266",
   "private": false,
   "main": "lib/el-form-dialog-chen.min.js",
-  "files": ["lib", "src"],
+  "files": [
+    "lib",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/cdlee390778266/el-formDialog"
